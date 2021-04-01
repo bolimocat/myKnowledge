@@ -20,13 +20,13 @@
 
 ​	我们通过mysql单机版本8.0.23来说明审计功能的实现过程和最终效果。mysql的编译、安装、初始化等操作这里不做过多描述，相关内容请读者自行搜索学习。
 
-![p1](/home/lming/文档/工作任务/knowledge/MySQL-init_connection/pic/Picture1.png)
+![p1](https://github.com/bolimocat/myKnowledge/blob/main/MySQL/pic/Picture1.png)
 
 ​	网上很多资料写的是通过general-log的内容进行审计跟踪，但由于general-log会记录用户登录后的所有内容，存在IO占用和资源消耗等问题，所以相对简便和节省资源的方式是通过binlog和init_connect来执行，所有对数据库修改的关键步骤执行结束时,将在binlog的末尾写入一条记录,同时通知语句解析器,语句执行完毕，我们可以根据这个信息，对用户的操作进行审计跟踪。
 
 ​	首先从配置文件中看到当前MySQL系统中的binlog配置，系统会在持续执行时，自动生成.000001及以后的文件。
 
-![p2](/home/lming/文档/工作任务/knowledge/MySQL-init_connection/pic/Picture2.png)
+![p2](https://github.com/bolimocat/myKnowledge/blob/main/MySQL/pic/Picture2.png)
 
 ​	接下来我们来看init_connect的设置，需要在mysql初始化data的时候，就在cnf文件中增加init_connect参数，如下：
 
@@ -55,11 +55,11 @@ mysql> create table auditdb.access(
 
 ​	由系统管理员创建这个用于存储普通用户登记信息的表，根据实际需要，还可以修改表结构以获得更多功能。
 
-![p3](/home/lming/文档/工作任务/knowledge/MySQL-init_connection/pic/Picture3.png)
+![p3](https://github.com/bolimocat/myKnowledge/blob/main/MySQL/pic/Picture3.png)
 
 ​	数据库管理员登录，创建实际存储普通用户登录记录的库和表。
 
-![p4](/home/lming/文档/工作任务/knowledge/MySQL-init_connection/pic/Picture4.png)
+![p4](https://github.com/bolimocat/myKnowledge/blob/main/MySQL/pic/Picture4.png)
 
 #### 2、应用
 
@@ -84,7 +84,7 @@ mysql> flush privileges;
 
 ​	数据库管理员退出，新用户user1登录，在testDB中执行一些操作。
 
-![p5](/home/lming/文档/工作任务/knowledge/MySQL-init_connection/pic/Picture5.png)
+![p5](https://github.com/bolimocat/myKnowledge/blob/main/MySQL/pic/Picture5.png)
 
 ```
 mysql> use testDB;
@@ -95,7 +95,7 @@ mysql> select * from tb1;
 
 ​	user1登录成功，并且可以执行use和一些列操作，说明配置正确生效。由于user1对auditdb.access没有select的权限，因此暂时重新由root登录，查看该表的记录。
 
-![p15](/home/lming/文档/工作任务/knowledge/MySQL-init_connection/pic/Picture15.png)
+![p15](https://github.com/bolimocat/myKnowledge/blob/main/MySQL/pic/Picture15.png)
 
 ​	可以查看到user1的两次登录信息。
 
@@ -109,15 +109,15 @@ mysql> select * from tb1;
 mysql> show binlog events in ‘binlogfile’;
 ```
 
-![p6](/home/lming/文档/工作任务/knowledge/MySQL-init_connection/pic/Picture6.png)
+![p6](https://github.com/bolimocat/myKnowledge/blob/main/MySQL/pic/Picture6.png)
 
-​	![p7](/home/lming/文档/工作任务/knowledge/MySQL-init_connection/pic/Picture7.png)
+​	![p7](https://github.com/bolimocat/myKnowledge/blob/main/MySQL/pic/Picture7.png)
 
 ​	其中Pos和End_log_pos成对出现，可以理解为一个事务的开始和结束，下面的截图中可以看到，从10292到10323，完成一个提交，10402到10479是一个事务开始，10479到10531查询的是testDB.tb3这个表，10531到10575对这个表（id都是128）执行了写入，最后从10575到10606做提交。
 
 ​	那么如何知道这些操作是谁完成的能，则需要通过第二种binlog的查看方式，使用系统工具mysqlbinlog查看具体信息：bin/.mysqlbinlog binlog.000002
 
-![p8](/home/lming/文档/工作任务/knowledge/MySQL-init_connection/pic/Picture8.png)
+![p8](https://github.com/bolimocat/myKnowledge/blob/main/MySQL/pic/Picture8.png)
 
 ​	找到刚才10402到10479开始事务的位置，看到有一个thread_id=33，这个就是执行接下来操作的用户ID，登录状态下，可以直接执行select connection_id();查看当前用户的这个值。而init_connect要做的，就是把每次用户登录时的thread_id记录下来。
 
@@ -159,11 +159,11 @@ call testDB.init_insert();
 
 ​	两种方式都是可以正常执行的，考虑init_connect的时候没有use库，所以我们按call testDB.init_insert()的方式写。
 
-![p9](/home/lming/文档/工作任务/knowledge/MySQL-init_connection/pic/Picture9.png)
+![p9](https://github.com/bolimocat/myKnowledge/blob/main/MySQL/pic/Picture9.png)
 
 ​	普通用户登录，查询testDB.tb1：
 
-![p10](/home/lming/文档/工作任务/knowledge/MySQL-init_connection/pic/Picture10.png)
+![p10](https://github.com/bolimocat/myKnowledge/blob/main/MySQL/pic/Picture10.png)
 
 ​	查询到了结果，说明用户登录时通过init_connect执行的存储过程可用。
 
@@ -171,7 +171,7 @@ call testDB.init_insert();
 
 ​	还用刚才的testDB库，再创建一个tb2(a int,b int);，同样的思路，继续给用户user1在tb2上的写入权限。
 
-![p10](/home/lming/文档/工作任务/knowledge/MySQL-init_connection/pic/Picture11.png)
+![p11](https://github.com/bolimocat/myKnowledge/blob/main/MySQL/pic/Picture11.png)
 
 ​	在cnf的init_connect中写为两个SQL连续的形式。
 
@@ -179,17 +179,17 @@ call testDB.init_insert();
 init_connect='insert into tb1 (time,comment) values (now(),'abcde');insert into tb2 (a,b) values (1,2)'
 ```
 
-![p12](/home/lming/文档/工作任务/knowledge/MySQL-init_connection/pic/Picture12.png)
+![p12](https://github.com/bolimocat/myKnowledge/blob/main/MySQL/pic/Picture12.png)
 
 ​	尝试普通用户连接并查看相关表记录。
 
-![13](/home/lming/文档/工作任务/knowledge/MySQL-init_connection/pic/Picture13.png)
+![13](https://github.com/bolimocat/myKnowledge/blob/main/MySQL/pic/Picture13.png)
 
 ​	同时在两个表里看到了插入的内容，说明init_connect配置有效。
 
 ​	综上所述，init_connect的功能简单，只是让普通用户在连接时自动执行一些语句，甚至DBA都不关心当时执行返回了哪些结果，而只关心成功连接则可以use下去，不成功执行则会报类似
 
-![p14](/home/lming/文档/工作任务/knowledge/MySQL-init_connection/pic/Picture14.png)
+![p14](/MySQL/pic/Picture14.png)
 
 的错误。
 
