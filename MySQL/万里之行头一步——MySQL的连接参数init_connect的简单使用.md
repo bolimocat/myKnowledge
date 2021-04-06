@@ -189,7 +189,7 @@ init_connect='insert into tb1 (time,comment) values (now(),'abcde');insert into 
 
 ​	综上所述，init_connect的功能简单，只是让普通用户在连接时自动执行一些语句，甚至DBA都不关心当时执行返回了哪些结果，而只关心成功连接则可以use下去，不成功执行则会报类似
 
-![p14](./MySQL/pic/Picture14.png)
+![p14](./edit/main/MySQL/pic/Picture14.png)
 
 的错误。
 
