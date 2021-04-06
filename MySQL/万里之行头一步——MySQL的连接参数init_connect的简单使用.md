@@ -20,13 +20,13 @@
 
 ​	我们通过mysql单机版本8.0.23来说明审计功能的实现过程和最终效果。mysql的编译、安装、初始化等操作这里不做过多描述，相关内容请读者自行搜索学习。
 
-![p1](./pic/Picture1.png)
+![image](./pic/Picture1.png)
 
 ​	网上很多资料写的是通过general-log的内容进行审计跟踪，但由于general-log会记录用户登录后的所有内容，存在IO占用和资源消耗等问题，所以相对简便和节省资源的方式是通过binlog和init_connect来执行，所有对数据库修改的关键步骤执行结束时,将在binlog的末尾写入一条记录,同时通知语句解析器,语句执行完毕，我们可以根据这个信息，对用户的操作进行审计跟踪。
 
 ​	首先从配置文件中看到当前MySQL系统中的binlog配置，系统会在持续执行时，自动生成.000001及以后的文件。
 
-![p2](https://github.com/bolimocat/myKnowledge/blob/main/MySQL/pic/Picture2.png)
+![image](https://github.com/bolimocat/myKnowledge/blob/main/MySQL/pic/Picture2.png)
 
 ​	接下来我们来看init_connect的设置，需要在mysql初始化data的时候，就在cnf文件中增加init_connect参数，如下：
 
