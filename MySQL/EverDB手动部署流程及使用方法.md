@@ -8,7 +8,7 @@ EverDB的部署方案，基本是dbscale+zookeeper+mysql的方式，以下描述
 
 三台机器分别为nodeA,nodeB,nodeC，每个机器上分别有角色auth,global,normal,part1,part2。三台机器之间的角色上，有master和slave之分，所以整个集群需要初始化15个mysql实例。
 
-![部署方案](./picture/部署方案.png)
+![部署方案](./pic/部署方案.png)
 
 ## 二、系统准备
 
@@ -436,7 +436,7 @@ remote-port = 22
 
 执行./pre_check
 
-![pre_check](./picture/pre_check.png)
+![pre_check](./pic/pre_check.png)
 
 截图中可以看到，检查工具提示max open file limit当前是1024000，如果低于1000000会报错，这个是mysql的conf里的max open file，需要在启动时写好。下面是对每个节点检查的状态结果。如果有异常，则可以根据配置文件定位的log，到里面找dbscale.log文件进行分析。
 
