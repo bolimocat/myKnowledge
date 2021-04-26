@@ -90,6 +90,10 @@ Runner registered successfully. Feel free to start it, but if it's running alrea
 
 注意如果在注册新runner的时候，executor选择了docker，会让你输入要使用的docker镜像，而在执行过程中，操作就会在这个镜像的容器里里完成。
 
+补充说明，如果使用docker作为executor，默认会去执行docker pull操作，但是系统会因为被卡在docker login而无法正确执行，因此需要修改runner的pull策略，修改 /etc/gitlab-runner/config.toml 这个文件中，对应的runner标签下，executor的属性值，增加一个 pull_policy = "never"就可以了。
+
+![pull_never](./picture/pull_never.png)
+
 ## 4.创建用于执行测试任务的runner
 
 其实具体的注册和创建工作已经在上面的步骤完成了，正式启用某个runner，需要在管理页的runner页面，进入该runner的编辑页面，点击enable，使他开始工作。
