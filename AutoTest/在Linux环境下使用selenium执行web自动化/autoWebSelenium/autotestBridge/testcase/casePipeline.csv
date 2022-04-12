@@ -1,0 +1,6 @@
+#2String chname,3String pipelinename,4boolean select_node,5boolean load_node,6int parallelism,7int oppositethread,8int loaddatathread,9int loadfilethread
+#10,int isClicked,11 int isMainWeb,12 String canalName,13 int consumption,14 int overtime,15 String describe_info,16 boolean issuper,17 int isBatch,18 int batchsize,19 int ignoreSelect;
+#20 int ignoreLoad,21 String arbiter,22 String loadbalance,23 String transport,24 int selectlog,25 int selectlogdetail,26 int loadlog,27 int dryrunmode,28 int supportddl,29 boolean ddlView;
+#21 boolean ddlFunction,22 boolean ddlProcedure,23 boolean ddlEvent,24 boolean ddlTriger,25 boolean jumbddlwrong,26 boolean fileduplicate，27 boolean transportencry,28 boolean publicnet,29 boolean jumpfreegate;
+#30,boolean jumpreversequery,31 boolean tbtypetrans,32 compatiblesync,33 String customsyncsign; 
+测试的chname1,测试的pipelinename,1,1,5,5,5,5,1,1,测试的canalname,500,60,描述信息,1,1,5,1,1,arbiter,stick,RPC,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,customsyncsign

@@ -1,0 +1,99 @@
+--testcase
+create table testcase(id int primary key not null auto_increment,name varchar(200) not null,source_datasource int,target_datasource int,data_table int,cannal int,master_slave int,channelinfo int,pipeline int,mapping int,ctime timestamp,execute_times int,passed int);
+
+--datasource
+create table datasource(id int primary key auto_increment,name varchar(200),ds_type varchar(10),ds_user varchar(30),ds_pass varchar(30),ds_urs varchar(200),ds_code varchar(20),ds_pool text);
+
+--datatable
+create table datatable(id int primary key not null auto_increment,db varchar(30), tb varchar(30),ds_name varchar(30));
+
+--canal
+create table canal(id int primary key not null auto_increment,db varchar(30), 
+canal_name varchar(30),
+run_mode int,
+zkcluster varchar(6),
+ds_type int,
+db_url varchar(300),
+db_user varchar(30),
+db_pass varchar(30),
+db_code varchar(10),
+position_setup boolean,
+position_startup boolean,
+position_info varchar(300),
+tsdb_startup boolean,
+rdsaccesskey varchar(50),
+rdssecretkey varchar(50),
+rdsinstanceid varchar(50),
+store_type int,
+batch_type int,
+mem_buffer_record int,
+mem_buffer_unit int,
+HA_type int,
+media_group_key varchar(50),
+heartbeat_startup boolean,
+heartbeat_sql varchar(300),
+heartbeat_fequence int,
+heartbeat_overtime int,
+heartbeat_retry int,
+heartbeat_ha boolean,
+other_parameters boolean,
+meta_type int,
+index_type int,
+service_port int,
+default_overtime int,
+sendBufferSize int,
+receiveBufferSize int,
+switch_backtime int,
+filter_expression varchar(300),
+describe_info varchar(300)
+);
+
+--master-slave
+create table masterslave(id int primary key not null auto_increment,source_info varchar(30), master_info varchar(30),describe_info varchar(100));
+
+--channel
+create table channelinfo(id int primary key not null auto_increment,chname varchar(30),sync_accord int,sync_mode int,
+accord_start boolean,accord_algorithm int,requery_latency int,describe_info varchar(300)
+);
+
+--pipeline
+create table pipeline(id int primary key not null auto_increment,chname varchar(30),pipelinename varchar(30),
+select_node boolean,
+load_node boolean,
+parallelism int,
+oppositethread int,
+loaddatathread int,
+loadfilethread int,
+isClicked int,
+isMainWeb int,
+canalName varchar(30),
+consumption int,
+overtime int,
+describe_info varchar(300),
+issuper boolean,
+isBatch int,
+batchsize int,
+ignoreSelect int,
+ignoreLoad int,
+arbiter varchar(10),
+loadbalance varchar(10),
+transport varchar(10),
+selectlog int,
+selectlogdetail int,
+loadlog int,
+dryrunmode int,
+supportddl int,
+ddlView boolean,
+ddlFunction boolean,
+ddlProcedure boolean,
+ddlEvent boolean,
+ddlTriger boolean,
+jumbddlwrong boolean,
+fileduplicate boolean,
+transportencry boolean,
+publicnet boolean,
+jumpfreegate boolean,
+jumpreversequery boolean,
+tbtypetrans boolean,
+compatiblesync boolean,
+customsyncsign varchar(30));

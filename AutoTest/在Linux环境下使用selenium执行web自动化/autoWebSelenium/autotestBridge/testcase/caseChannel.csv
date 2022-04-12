@@ -1,0 +1,2 @@
+#1String chname,2int sync_accord,3int sync_mode,4int accord_start,5int accord_algorithm,6int requery_latency,7String describe_info
+测试用的channel222,1,1,1,1,1,测试用的channel的描述
