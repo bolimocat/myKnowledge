@@ -64,7 +64,7 @@ esac
 ##### a 创建topic
 
 ```
-kafka-topics.sh --create --zookeeper 192.168.2.25:2181 --replication-factor 2 --partitions 3 --topic mytest
+kafka-topics.sh --create --bootstrap-server 192.168.2.25:9092 --replication-factor 1 --partitions 1 --topic  mytest
 
 --zookeeper					定义 zookeeper 集群服务器地址，如果有多个 IP 地址使用逗号分割，一般使用一个 IP 即可
 --replication-factor		定义分区副本数，1 代表单副本，建议为 2 
