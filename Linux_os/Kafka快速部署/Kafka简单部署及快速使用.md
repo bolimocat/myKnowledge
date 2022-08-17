@@ -76,19 +76,19 @@ kafka-topics.sh --create --bootstrap-server 192.168.2.25:9092 --replication-fact
 ##### b 查看当前服务器中的topic
 
 ```
-kafka-topics.sh --list --zookeeper 192.168.2.25:2181
+./kafka-topics.sh --list --bootstrap-server 192.168.2.25:9092
 ```
 
 ##### c 查看某个topic的详情
 
 ```
-kafka-topics.sh --describe --zookeeper 192.168.2.25:2181
+./kafka-topics.sh --describe --bootstrap-server 192.168.2.25:9092
 ```
 
 ##### d 发布消息
 
 ```
-kafka-console-producer.sh --broker-list 192.168.2.25:9092 --topic mytest
+./kafka-console-producer.sh --broker-list 192.168.2.25:9092 --topic mytest
 ```
 
 ##### e 接收消息
